@@ -39,7 +39,7 @@ jobs:
           username: ${{secrets.DOCKER_USERNAME}}
           password: ${{secrets.DOCKER_TOKEN}}
 
-      - if: ${{ github.ref== 'refs/heads/main }}
+      - if: ${{ github.ref== 'refs/heads/main' }}
         name: Build docker image
         run:
           ./mvnw spring-boot:build-image -DskipTests
