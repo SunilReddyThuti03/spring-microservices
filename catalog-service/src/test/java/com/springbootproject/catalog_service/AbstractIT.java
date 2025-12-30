@@ -13,11 +13,11 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 @Import(TestcontainersConfiguration.class)
 public abstract class AbstractIT {
-    @LocalServerPort
-    int port;
+  @LocalServerPort int port;
 
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
-    }
+  @BeforeEach
+  void setUp() {
+    RestAssured.baseURI = "http://localhost";
+    RestAssured.port = port;
+  }
 }
