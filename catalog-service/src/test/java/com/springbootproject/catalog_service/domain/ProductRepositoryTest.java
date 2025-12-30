@@ -24,7 +24,7 @@ class ProductRepositoryTest {
   // This test is to demonstrate how to write tests for the repository layer.
   @Test
   void shouldGetAllProducts() {
-    List<ProductEntity> products = productRepository.findAll() ;
+    List<ProductEntity> products = productRepository.findAll();
     assertThat(products).hasSize(15);
   }
 
