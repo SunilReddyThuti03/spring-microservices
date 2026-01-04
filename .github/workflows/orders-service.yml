@@ -5,7 +5,7 @@ on:
     branches:
       - '**'
     paths:
-      - 'order-service/**'
+      - 'orders-service/**'
 
 jobs:
   build:
