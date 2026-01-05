@@ -1,5 +1,6 @@
 package com.springbootproject.orders_service.web.exception;
 
+import com.springbootproject.orders_service.domain.InvalidOrderException;
 import com.springbootproject.orders_service.domain.OrderNotFoundException;
 import java.net.URI;
 import java.time.Instant;
@@ -67,5 +68,16 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
 
+    @ExceptionHandler(InvalidOrderException.class)
+    ProblemDetail handleInvalidOrderExceptions(InvalidOrderException e){
+      ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+      problemDetail.setTitle("Invalid Order Creation Request");
+      problemDetail.setType(BAD_REQUEST_TYPE);
+      problemDetail.setProperty("service", SERVICE_NAME);
+      problemDetail.setProperty("error_categgory", "Generic");
+      problemDetail.setProperty("timestamp", Instant.now());
+
+      return problemDetail;
+    }
 
 }
