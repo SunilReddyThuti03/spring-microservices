@@ -3,10 +3,4 @@ package com.springbootproject.orders_service.clients.catalog;
 import java.math.BigDecimal;
 
 public record Product(
-    String code,
-    String name,
-    String description,
-    String imageUrl,
-    BigDecimal price
-) {
-}
+    String code, String name, String description, String imageUrl, BigDecimal price) {}

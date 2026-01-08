@@ -1,32 +1,26 @@
 package com.springbootproject.orders_service.web.controllers;
 
 import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 import com.springbootproject.orders_service.AbstractIT;
-//import com.springbootproject.orders_service.domain.models.OrderSummary;
+// import com.springbootproject.orders_service.domain.models.OrderSummary;
 import com.springbootproject.orders_service.testdata.TestDataFactory;
-import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
-import java.math.BigDecimal;
-import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.jdbc.Sql;
 
-//@Sql("/test-orders.sql")
+// @Sql("/test-orders.sql")
 class OrderControllerTests extends AbstractIT {
 
-    @Nested
-    class CreateOrderTests {
-        @Test
-        void shouldCreateOrderSuccessfully() {
-            //mockGetProductByCode("P100", "Product 1", new BigDecimal("25.50"));
-            var payload =
-                    """
+  @Nested
+  class CreateOrderTests {
+    @Test
+    void shouldCreateOrderSuccessfully() {
+      // mockGetProductByCode("P100", "Product 1", new BigDecimal("25.50"));
+      var payload =
+          """
                        {
                                      "customer":{
                                          "name":"shiva",
@@ -51,26 +45,28 @@ class OrderControllerTests extends AbstractIT {
                                      ]
                                  }
                     """;
-            given().contentType(ContentType.JSON)
-                    //.header("Authorization", "Bearer " + getToken())
-                    .body(payload)
-                    .when()
-                    .post("/api/orders")
-                    .then()
-                    .statusCode(HttpStatus.CREATED.value())
-                    .body("orderNumber", notNullValue());
-        }
-
-        @Test
-        void shouldReturnBadRequestWhenMandatoryDataIsMissing() {
-            var payload = TestDataFactory.createOrderRequestWithInvalidCustomer();
-            given().contentType(ContentType.JSON)
-                    // .header("Authorization", "Bearer " + getToken())
-                    .body(payload)
-                    .when()
-                    .post("/api/orders")
-                    .then()
-                    .statusCode(HttpStatus.BAD_REQUEST.value());
-        }
+      given()
+          .contentType(ContentType.JSON)
+          // .header("Authorization", "Bearer " + getToken())
+          .body(payload)
+          .when()
+          .post("/api/orders")
+          .then()
+          .statusCode(HttpStatus.CREATED.value())
+          .body("orderNumber", notNullValue());
     }
+
+    @Test
+    void shouldReturnBadRequestWhenMandatoryDataIsMissing() {
+      var payload = TestDataFactory.createOrderRequestWithInvalidCustomer();
+      given()
+          .contentType(ContentType.JSON)
+          // .header("Authorization", "Bearer " + getToken())
+          .body(payload)
+          .when()
+          .post("/api/orders")
+          .then()
+          .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+  }
 }

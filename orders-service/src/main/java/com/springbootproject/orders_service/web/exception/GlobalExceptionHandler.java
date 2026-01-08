@@ -2,12 +2,11 @@ package com.springbootproject.orders_service.web.exception;
 
 import com.springbootproject.orders_service.domain.InvalidOrderException;
 import com.springbootproject.orders_service.domain.OrderNotFoundException;
+import jakarta.annotation.Nullable;
 import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-
-import jakarta.annotation.Nullable;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,35 +48,43 @@ class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     return problemDetail;
   }
 
-    @Override
-    @Nullable protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){
-        List<String> errors = new ArrayList<>();
-        ex.getBindingResult().getAllErrors().forEach((error)->{
-            String errorMessage = error.getDefaultMessage();
-            errors.add(errorMessage);
-        });
+  @Override
+  @Nullable
+  protected ResponseEntity<Object> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
+    List<String> errors = new ArrayList<>();
+    ex.getBindingResult()
+        .getAllErrors()
+        .forEach(
+            (error) -> {
+              String errorMessage = error.getDefaultMessage();
+              errors.add(errorMessage);
+            });
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid Request Payload");
-        problemDetail.setTitle("Bad Request");
-        problemDetail.setType(BAD_REQUEST_TYPE);
-        problemDetail.setProperty("errors",errors);
-        problemDetail.setProperty("service", SERVICE_NAME);
-        problemDetail.setProperty("error_category", "Generic");
-        problemDetail.setProperty("timestamp", Instant.now());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
-    }
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid Request Payload");
+    problemDetail.setTitle("Bad Request");
+    problemDetail.setType(BAD_REQUEST_TYPE);
+    problemDetail.setProperty("errors", errors);
+    problemDetail.setProperty("service", SERVICE_NAME);
+    problemDetail.setProperty("error_category", "Generic");
+    problemDetail.setProperty("timestamp", Instant.now());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+  }
 
-    @ExceptionHandler(InvalidOrderException.class)
-    ProblemDetail handleInvalidOrderExceptions(InvalidOrderException e){
-      ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-      problemDetail.setTitle("Invalid Order Creation Request");
-      problemDetail.setType(BAD_REQUEST_TYPE);
-      problemDetail.setProperty("service", SERVICE_NAME);
-      problemDetail.setProperty("error_categgory", "Generic");
-      problemDetail.setProperty("timestamp", Instant.now());
+  @ExceptionHandler(InvalidOrderException.class)
+  ProblemDetail handleInvalidOrderExceptions(InvalidOrderException e) {
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+    problemDetail.setTitle("Invalid Order Creation Request");
+    problemDetail.setType(BAD_REQUEST_TYPE);
+    problemDetail.setProperty("service", SERVICE_NAME);
+    problemDetail.setProperty("error_categgory", "Generic");
+    problemDetail.setProperty("timestamp", Instant.now());
 
-      return problemDetail;
-    }
-
+    return problemDetail;
+  }
 }
