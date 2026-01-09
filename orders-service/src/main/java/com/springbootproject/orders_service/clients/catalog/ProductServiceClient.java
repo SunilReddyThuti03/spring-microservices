@@ -2,6 +2,7 @@ package com.springbootproject.orders_service.clients.catalog;
 
 import java.util.Optional;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.micrometer.annotation.Timer;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ public class ProductServiceClient {
     this.restClient = restClient;
   }
 
+  @CircuitBreaker(name = "catalog-service")
   @Timer(name="catalog-service")
   @Retry(name = "catalog-service", fallbackMethod ="getProductByCodeFallback" )
   public Optional<Product> getProductByCode(String code) {
