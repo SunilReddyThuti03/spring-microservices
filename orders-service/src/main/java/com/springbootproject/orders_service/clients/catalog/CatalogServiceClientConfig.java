@@ -27,6 +27,7 @@ public class CatalogServiceClientConfig {
                 new JdkClientHttpRequestFactory(httpClient);
 
         requestFactory.setReadTimeout(Duration.ofSeconds(5));
+        System.out.println("hi");
         return builder
                 .baseUrl(properties.catalogServiceUrl())
                 .requestFactory(requestFactory)
